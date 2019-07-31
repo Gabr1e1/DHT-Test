@@ -239,7 +239,7 @@ func (n *Node) Get_(k *string, reply *string) error {
 		err = client.Call("Node.DirectGet_", k, &res)
 		if err != nil {
 			_ = client.Close()
-			fmt.Println("Can't get Node: ", err)
+			//fmt.Println("Can't get Node: ", err)
 			return err
 		}
 		_ = client.Close()
