@@ -43,12 +43,12 @@ func (n *Node) Run() {
 
 func (n *Node) Get(k string) (bool, string) {
 	var val string
-	for i := 0; i < maxTry; i++ {
+	for i := 0; i < 5; i++ {
 		_ = n.Get_(&k, &val)
 		if val != "" {
 			return val != "", val
 		}
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 	}
 	return val != "", val
 }
