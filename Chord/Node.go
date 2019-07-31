@@ -266,9 +266,11 @@ func (n *Node) Put_(kv *KVPair, reply *bool) error {
 		return err
 	}
 
+	var succ InfoType
 	if p.NodeNum.Cmp(n.Info.NodeNum) == 0 {
 		n.data[id.String()] = *kv
 		*reply = true
+		succ = n.Successors[0]
 	} else {
 		client, err := n.Connect(p)
 		if err != nil {
@@ -280,11 +282,12 @@ func (n *Node) Put_(kv *KVPair, reply *bool) error {
 			fmt.Println("Can't Put data in another node: ", err)
 			return err
 		}
+		_ = client.Call("Node.FindFirstSuccessorAlive", 0, &succ)
 		_ = client.Close()
 	}
 
 	//replicate
-	client, err := n.Connect(n.Successors[0])
+	client, err := n.Connect(succ)
 	if err != nil {
 		return err
 	}
@@ -333,15 +336,6 @@ func (n *Node) Del_(k *string, reply *bool) error {
 		}
 		_ = client.Close()
 	}
-
-	//delete replicate
-	client, err := n.Connect(n.Successors[0])
-	if err != nil {
-		return err
-	}
-	var tmp bool
-	_ = client.Call("Node.DirectDel_", k, &tmp)
-	_ = client.Close()
 	return nil
 }
 
