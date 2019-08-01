@@ -530,7 +530,7 @@ func (n *Node) Maintain(_ *int, _ *int) error {
 			continue
 		}
 		var reply bool
-		go client.Call("Node.DirectPut_", &kv, &reply)
+		_ = client.Call("Node.DirectPut_", &kv, &reply)
 	}
 	_ = client.Close()
 	return nil
