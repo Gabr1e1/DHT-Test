@@ -482,7 +482,6 @@ func (n *Node) checkPredecessor() {
 			}
 		}
 		n.mux.Unlock()
-		_ = n.Maintain(nil, nil)
 		time.Sleep(100 * time.Millisecond)
 	}
 }
