@@ -1,5 +1,3 @@
-//TODO: LINKED LIST
-
 package DHT
 
 import (
